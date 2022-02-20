@@ -1,0 +1,39 @@
+{
+  "project_info": {
+    "project_number": "182660996815",
+    "project_id": "gtc-workshop",
+    "storage_bucket": "gtc-workshop.appspot.com"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:182660996815:android:bae381a15d9aa4ec9c21ba",
+        "android_client_info": {
+          "package_name": "com.example.gtcv3"
+        }
+      },
+      "oauth_client": [
+        {
+          "client_id": "182660996815-eu9bmusdhvo3comkpaetagt4blebhorh.apps.googleusercontent.com",
+          "client_type": 3
+        }
+      ],
+      "api_key": [
+        {
+          "current_key": "AIzaSyDTA6rFM7mkiKelnOJwIWHaV0JouDM1X9o"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": [
+            {
+              "client_id": "182660996815-eu9bmusdhvo3comkpaetagt4blebhorh.apps.googleusercontent.com",
+              "client_type": 3
+            }
+          ]
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}
