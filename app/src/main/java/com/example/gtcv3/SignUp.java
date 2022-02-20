@@ -34,12 +34,12 @@ import java.util.Map;
 public class SignUp extends AppCompatActivity {
 
     EditText rFullName, rEmail, rPassword, rPhone;
-   TextView rtocreate;
+    TextView rtocreate;
     Button rCreateBtn;
     FirebaseAuth fAuth;
     ProgressBar progressBar;
     FirebaseFirestore fstore;
-String userID;
+    String userID;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -80,7 +80,7 @@ String userID;
                     return;
                 }
                 if (TextUtils.isEmpty(password)) {
-                    rEmail.setError("Password is required");
+                    rPassword.setError("Password is required");
                     return;
                 }
                 if (password.length() < 6) {
@@ -89,39 +89,37 @@ String userID;
                 }
 
 
-
                 // user actually registration to firebase
 
-                fAuth.createUserWithEmailAndPassword(email, password).addOnCompleteListener(task ->  {
-                                                                                                {
-                                                                                                    if (task.isSuccessful()) {
-                                                                                                        Toast.makeText(SignUp.this, "Account Created", Toast.LENGTH_SHORT).show();
-                                                                                                        userID = fAuth.getCurrentUser().getUid();
-                                                                                                        DocumentReference documentReference = fstore.collection("users").document(userID);
-                                                                                                        Map<String, Object> user = new HashMap<>();
-                                                                                                        user.put("Full name", rFullName);
-                                                                                                        user.put("Email adress", rEmail);
-                                                                                                        user.put("Phone number", rPhone);
-                                                                                                        documentReference.set(user).addOnSuccessListener(new OnSuccessListener<Void>() {
-                                                                                                            @Override
-                                                                                                            public void onSuccess(Void unused) {
-                                                                                                                Log.d(TAG, "onSuccess: Account is created for "+ userID);
-                                                                                                            }
-                                                                                                        });
+                fAuth.createUserWithEmailAndPassword(email, password).addOnCompleteListener(task -> {
+                            {
+                                if (task.isSuccessful()) {
+                                    Toast.makeText(SignUp.this, "Account Created", Toast.LENGTH_SHORT).show();
+                                    userID = fAuth.getCurrentUser().getUid();
+                                    DocumentReference documentReference = fstore.collection("users").document(userID);
+                                    Map<String, Object> user = new HashMap<>();
+                                    user.put("Full name", rFullName);
+                                    user.put("Email adress", rEmail);
+                                    user.put("Phone number", rPhone);
+                                    documentReference.set(user).addOnSuccessListener(new OnSuccessListener<Void>() {
+                                        @Override
+                                        public void onSuccess(Void unused) {
+                                            Log.d(TAG, "onSuccess: Account is created for " + userID);
+                                        }
+                                    });
+                                    Log.println(Log.DEBUG,"debug", "Your message to print");
 
 
+                                    startActivity(new Intent(getApplicationContext(), MainActivity.class));
+                                } else
+                                {
+                                    Toast.makeText(SignUp.this, "Error" + task.getException().getMessage(), Toast.LENGTH_SHORT).show();
 
+                                }
 
-
-                                                                                                        startActivity(new Intent(getApplicationContext(), MainActivity.class));
-                                                                                                    } else {
-                                                                                                        Toast.makeText(SignUp.this, "Error" + task.getException().getMessage(), Toast.LENGTH_SHORT).show();
-
-                                                                                                    }
-
-                                                                                                }
-                                                                                            }
-                                                                                            );
+                            }
+                        }
+                );
 
 
             }
@@ -137,7 +135,7 @@ String userID;
         rtocreate.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                startActivity(new Intent(getApplicationContext(),Login.class));
+                startActivity(new Intent(getApplicationContext(), Login.class));
             }
         });
 

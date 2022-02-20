@@ -82,10 +82,10 @@ fAuth.signInWithEmailAndPassword(email,password).addOnCompleteListener(new OnCom
         });
 
 
-       ltocreate.setOnClickListener(new View.OnClickListener() {
+        ltocreate.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                startActivity(new Intent(getApplicationContext(),SignUp.class));
+                startActivity(new Intent(getApplicationContext(), SignUp.class));
             }
         });
 
@@ -128,6 +128,7 @@ forgotLink.setOnClickListener(new View.OnClickListener() {
 passwordreesetdiag.create().show();
     }
 });
+
 
 
 
