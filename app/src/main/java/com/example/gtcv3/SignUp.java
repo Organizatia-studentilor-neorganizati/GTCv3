@@ -28,6 +28,9 @@ import com.google.firebase.firestore.FirebaseFirestore;
 
 import org.w3c.dom.Text;
 
+import java.util.HashMap;
+import java.util.Map;
+
 public class SignUp extends AppCompatActivity {
 
     EditText rFullName, rEmail, rPassword, rPhone;
@@ -36,7 +39,7 @@ public class SignUp extends AppCompatActivity {
     FirebaseAuth fAuth;
     ProgressBar progressBar;
     FirebaseFirestore fstore;
-
+String userID;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -52,6 +55,7 @@ public class SignUp extends AppCompatActivity {
         rtocreate = findViewById(R.id.tologin);
 
         fAuth = FirebaseAuth.getInstance();
+        fstore = FirebaseFirestore.getInstance();
 
         if (fAuth.getCurrentUser() != null)
         //if the user is already logged in he is skipped this registration step
@@ -70,6 +74,7 @@ public class SignUp extends AppCompatActivity {
                 String fullName = rFullName.getText().toString();
                 String phonenumber = rPhone.getText().toString();
 
+
                 if (TextUtils.isEmpty(email)) {
                     rEmail.setError("Email address is required");
                     return;
@@ -85,13 +90,30 @@ public class SignUp extends AppCompatActivity {
 
 
 
-                // user actually registration
+                // user actually registration to firebase
 
                 fAuth.createUserWithEmailAndPassword(email, password).addOnCompleteListener(task ->  {
                                                                                                 {
                                                                                                     if (task.isSuccessful()) {
                                                                                                         Toast.makeText(SignUp.this, "Account Created", Toast.LENGTH_SHORT).show();
-                                                                                                        startActivity(new Intent(getApplicationContext(), Login.class));
+                                                                                                        userID = fAuth.getCurrentUser().getUid();
+                                                                                                        DocumentReference documentReference = fstore.collection("users").document(userID);
+                                                                                                        Map<String, Object> user = new HashMap<>();
+                                                                                                        user.put("Full name", rFullName);
+                                                                                                        user.put("Email adress", rEmail);
+                                                                                                        user.put("Phone number", rPhone);
+                                                                                                        documentReference.set(user).addOnSuccessListener(new OnSuccessListener<Void>() {
+                                                                                                            @Override
+                                                                                                            public void onSuccess(Void unused) {
+                                                                                                                Log.d(TAG, "onSuccess: Account is created for "+ userID);
+                                                                                                            }
+                                                                                                        });
+
+
+
+
+
+                                                                                                        startActivity(new Intent(getApplicationContext(), MainActivity.class));
                                                                                                     } else {
                                                                                                         Toast.makeText(SignUp.this, "Error" + task.getException().getMessage(), Toast.LENGTH_SHORT).show();
 
