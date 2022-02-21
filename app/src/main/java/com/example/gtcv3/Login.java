@@ -11,6 +11,7 @@ import android.text.TextUtils;
 import android.view.View;
 import android.widget.Button;
 import android.widget.EditText;
+import android.widget.ProgressBar;
 import android.widget.TextView;
 import android.widget.Toast;
 
@@ -26,7 +27,7 @@ public class Login extends AppCompatActivity {
     EditText lEmail, lPassword;
     Button lLoginBtn;
     TextView ltocreate, forgotLink;
-
+    ProgressBar pBar;
 
     FirebaseAuth fAuth;
 
@@ -38,11 +39,12 @@ public class Login extends AppCompatActivity {
 
         lEmail = findViewById(R.id.email);
         lPassword = findViewById(R.id.paswword);
-
+        pBar = findViewById(R.id.progressBar);
         lLoginBtn = findViewById(R.id.loginbtn);
         ltocreate = findViewById(R.id.toRegister);
         fAuth = FirebaseAuth.getInstance();
 forgotLink = findViewById(R.id.forgetpass);
+
 
 
         lLoginBtn.setOnClickListener(new View.OnClickListener() {
@@ -63,7 +65,7 @@ forgotLink = findViewById(R.id.forgetpass);
                     lPassword.setError("The password must be longer than 6 characters");
                     return;
                 }
-
+                pBar.setVisibility(View.VISIBLE);
                 //actual user authentification
 fAuth.signInWithEmailAndPassword(email,password).addOnCompleteListener(new OnCompleteListener<AuthResult>() {
     @Override
@@ -71,9 +73,10 @@ fAuth.signInWithEmailAndPassword(email,password).addOnCompleteListener(new OnCom
    if(task.isSuccessful())
    {
        Toast.makeText(Login.this, "Logged In", Toast.LENGTH_SHORT).show();
-       startActivity(new Intent(getApplicationContext(), MainActivity.class));
+       startActivity(new Intent(getApplicationContext(), Account.class));
 
-   }else {Toast.makeText(Login.this, "Error" + task.getException().getMessage(), Toast.LENGTH_SHORT).show(); }
+   }else {pBar.setVisibility(View.GONE);
+       Toast.makeText(Login.this, "Error" + task.getException().getMessage(), Toast.LENGTH_SHORT).show(); }
     }
 });
 

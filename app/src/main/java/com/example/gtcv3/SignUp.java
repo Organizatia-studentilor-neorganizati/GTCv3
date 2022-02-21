@@ -16,17 +16,12 @@ import android.widget.ProgressBar;
 import android.widget.TextView;
 import android.widget.Toast;
 
-import com.google.android.gms.tasks.OnCompleteListener;
 import com.google.android.gms.tasks.OnFailureListener;
 import com.google.android.gms.tasks.OnSuccessListener;
-import com.google.android.gms.tasks.Task;
-import com.google.firebase.auth.AuthResult;
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.auth.FirebaseUser;
 import com.google.firebase.firestore.DocumentReference;
 import com.google.firebase.firestore.FirebaseFirestore;
-
-import org.w3c.dom.Text;
 
 import java.util.HashMap;
 import java.util.Map;
@@ -40,6 +35,8 @@ public class SignUp extends AppCompatActivity {
     ProgressBar progressBar;
     FirebaseFirestore fstore;
     String userID;
+    ProgressBar pBar;
+
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -51,7 +48,7 @@ public class SignUp extends AppCompatActivity {
         rPassword = findViewById(R.id.paswword);
         rPhone = findViewById(R.id.phone);
         rCreateBtn = findViewById(R.id.createbtn);
-
+        pBar = findViewById(R.id.progressBar);
         rtocreate = findViewById(R.id.tologin);
 
         fAuth = FirebaseAuth.getInstance();
@@ -61,7 +58,7 @@ public class SignUp extends AppCompatActivity {
         //if the user is already logged in he is skipped this registration step
 
         {
-            startActivity(new Intent(getApplicationContext(), MainActivity.class));
+            startActivity(new Intent(getApplicationContext(), Account.class));
             finish();
         }
 
@@ -72,7 +69,7 @@ public class SignUp extends AppCompatActivity {
                 String email = rEmail.getText().toString().trim();
                 String password = rPassword.getText().toString().trim();
                 String fullName = rFullName.getText().toString();
-                String phonenumber = rPhone.getText().toString();
+                String phone = rPhone.getText().toString();
 
 
                 if (TextUtils.isEmpty(email)) {
@@ -89,30 +86,46 @@ public class SignUp extends AppCompatActivity {
                 }
 
 
+                pBar.setVisibility(View.VISIBLE);
                 // user actually registration to firebase
 
                 fAuth.createUserWithEmailAndPassword(email, password).addOnCompleteListener(task -> {
                             {
                                 if (task.isSuccessful()) {
+
                                     Toast.makeText(SignUp.this, "Account Created", Toast.LENGTH_SHORT).show();
+                                    startActivity(new Intent(getApplicationContext(), Account.class));
+                                    //send verification email
+
+                   FirebaseUser person = fAuth.getCurrentUser();
+                   person.sendEmailVerification().addOnSuccessListener(new OnSuccessListener<Void>() {
+                       @Override
+                       public void onSuccess(Void unused) {
+Toast.makeText(SignUp.this, "A verifcation email has been sent",Toast.LENGTH_SHORT).show();
+                       }
+                   }).addOnFailureListener(new OnFailureListener() {
+                       @Override
+                       public void onFailure(@NonNull Exception e) {
+                           Log.d(TAG, "onFailure: Email not sent to user"+e.getMessage());
+                       }
+                   });
+
+
+
+
                                     userID = fAuth.getCurrentUser().getUid();
-                                    DocumentReference documentReference = fstore.collection("users").document(userID);
+                                    DocumentReference documentReference = fstore.collection("Users").document(userID);
+
                                     Map<String, Object> user = new HashMap<>();
-                                    user.put("Full name", rFullName);
-                                    user.put("Email adress", rEmail);
-                                    user.put("Phone number", rPhone);
-                                    documentReference.set(user).addOnSuccessListener(new OnSuccessListener<Void>() {
-                                        @Override
-                                        public void onSuccess(Void unused) {
-                                            Log.d(TAG, "onSuccess: Account is created for " + userID);
-                                        }
-                                    });
-                                    Log.println(Log.DEBUG,"debug", "Your message to print");
+                                    user.put("fullName", rFullName);
+                                    user.put("email_address", rEmail);
+                                    user.put("phone_number", rPhone);
 
+                                    fstore.collection("Users").document(fAuth.getCurrentUser().getUid()).collection("Users").add(user);
 
-                                    startActivity(new Intent(getApplicationContext(), MainActivity.class));
-                                } else
-                                {
+                                } else {
+
+                                    pBar.setVisibility(View.GONE);
                                     Toast.makeText(SignUp.this, "Error" + task.getException().getMessage(), Toast.LENGTH_SHORT).show();
 
                                 }
@@ -125,13 +138,6 @@ public class SignUp extends AppCompatActivity {
             }
         });
 
-
-     /*rtocreate.setOnClickListener(new View.OnClickListener() {
-         @Override
-         public void onClick(View v) {
-           startActivity(new Intent(getApplicationContext(),Login.class));
-         }
-     });*/
         rtocreate.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {

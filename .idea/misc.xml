@@ -3,9 +3,16 @@
   <component name="DesignSurface">
     <option name="filePathToZoomLevelMap">
       <map>
-        <entry key="..\:/Users/stanf/Desktop/Android_Projects/GTCv3/app/src/main/res/layout/activity_login.xml" value="0.25" />
+        <entry key="..\:/Users/stanf/Desktop/Android_Projects/GTCv3/app/src/main/res/layout/activity_accountsettings.xml" value="0.4296875" />
+        <entry key="..\:/Users/stanf/Desktop/Android_Projects/GTCv3/app/src/main/res/layout/activity_login.xml" value="0.33" />
         <entry key="..\:/Users/stanf/Desktop/Android_Projects/GTCv3/app/src/main/res/layout/activity_main.xml" value="0.40625" />
-        <entry key="..\:/Users/stanf/Desktop/Android_Projects/GTCv3/app/src/main/res/layout/activity_register.xml" value="0.49074074074074076" />
+        <entry key="..\:/Users/stanf/Desktop/Android_Projects/GTCv3/app/src/main/res/layout/activity_register.xml" value="0.33" />
+        <entry key="..\:/Users/stanf/Desktop/Android_Projects/GTCv3/app/src/main/res/layout/forlogin.xml" value="0.67" />
+        <entry key="..\:/Users/stanf/Desktop/Android_Projects/GTCv3/app/src/main/res/layout/navdrawer.xml" value="0.25" />
+        <entry key="..\:/Users/stanf/Desktop/Android_Projects/GTCv3/app/src/main/res/layout/navdrawerheader.xml" value="1.3233082706766917" />
+        <entry key="..\:/Users/stanf/Desktop/Android_Projects/GTCv3/app/src/main/res/layout/navheader.xml" value="0.55" />
+        <entry key="..\:/Users/stanf/Desktop/Android_Projects/GTCv3/app/src/main/res/layout/testing.xml" value="0.5" />
+        <entry key="..\:/Users/stanf/Desktop/Android_Projects/GTCv3/app/src/main/res/menu/navdraweritems.xml" value="0.55" />
       </map>
     </option>
   </component>
